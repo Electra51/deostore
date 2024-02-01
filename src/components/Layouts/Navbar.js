@@ -2,10 +2,25 @@ import React from "react";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoMenuOutline, IoSearchOutline } from "react-icons/io5";
 import { LuUser2 } from "react-icons/lu";
-
+import { MdOutlineAccountCircle } from "react-icons/md";
 import navLogo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/auth";
+import { MdLogout } from "react-icons/md";
+import { BiSolidDashboard } from "react-icons/bi";
+import profileImg from "../../assets/woman.png";
+import { toast } from "react-toastify";
 const Navbar = () => {
+  const [auth, setAuth] = useAuth();
+  const handleLogout = () => {
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    localStorage.removeItem("auth");
+    toast.success("logout successfully");
+  };
   const items = (
     <>
       <div className="relative">
@@ -66,36 +81,55 @@ const Navbar = () => {
               </span>
             </div>
           </div>
-          <LuUser2 className="h-[36px] w-[26px] text-xl mr-5" />
-          {/* <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
+          {!auth.user ? (
+            <>
+              <div className="dropdown dropdown-end ">
+                <div tabIndex={0} role="button" className="avatar">
+                  <div className="w-10 rounded-full">
+                    <LuUser2 className="h-[36px] w-[26px] text-xl" />
+                  </div>
+                </div>
+                <Link
+                  to="/signin"
+                  tabIndex={0}
+                  className="dropdown-content mt-12 z-[1] p-2 shadow border bg-base-100 border-[#fcee26] rounded-md w-52">
+                  <h1 className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-center items-center gap-1 cursor-pointer">
+                    <MdOutlineAccountCircle className="text-xl" />
+                    Sign In/ Sign Up
+                  </h1>
+                </Link>
               </div>
-            </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li>
-                <a className="justify-between">
+            </>
+          ) : (
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img alt="Profile image" src={profileImg} />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content mt-1 bg-base-100 z-[1] p-2 shadow border  border-[#fcee26] rounded-md w-52">
+                <h1 className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer">
+                  <MdOutlineAccountCircle className="text-xl" />
                   Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul>
-          </div> */}
+                </h1>
+                <h1 className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer mt-3">
+                  <BiSolidDashboard className="text-xl" />
+                  Dashboard
+                </h1>
+                <h1
+                  className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer mt-3"
+                  onClick={handleLogout}>
+                  <MdLogout className="text-xl" />
+                  Logout
+                </h1>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>

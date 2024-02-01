@@ -32,7 +32,8 @@ body {
   src: url(../public/segoe_ui_semibold.woff);
 }
 
-h1 {
+h1,
+p {
   font-family: "axiformaregular";
 }
 
