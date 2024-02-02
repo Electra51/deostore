@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import HelmetHooks from "../../../hooks/HelmetHooks";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context/auth";
 const Signin = () => {
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [value, setValue] = useState({
     phone: "",
     password: "",
@@ -32,7 +33,7 @@ const Signin = () => {
           token: res.data.token,
         });
         localStorage.setItem("auth", JSON.stringify(res?.data));
-        navigate("/");
+        navigate(location.state || "/");
       } else {
         toast.error(res.data.message);
       }

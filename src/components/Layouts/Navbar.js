@@ -113,14 +113,20 @@ const Navbar = () => {
               <ul
                 tabIndex={0}
                 className="dropdown-content mt-1 bg-base-100 z-[1] p-2 shadow border  border-[#fcee26] rounded-md w-52">
-                <h1 className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer">
+                <Link
+                  to={`/dashboard/${
+                    auth?.user?.role === 1 ? "admin" : "user"
+                  }/profile`}
+                  className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer">
                   <MdOutlineAccountCircle className="text-xl" />
                   Profile
-                </h1>
-                <h1 className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer mt-3">
+                </Link>
+                <Link
+                  to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+                  className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer mt-3">
                   <BiSolidDashboard className="text-xl" />
                   Dashboard
-                </h1>
+                </Link>
                 <h1
                   className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer mt-3"
                   onClick={handleLogout}>

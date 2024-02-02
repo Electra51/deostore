@@ -1,8 +1,24 @@
 export const menus = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/services", label: "Services" },
-  { to: "/projects", label: "Project" },
-  { to: "/blog", label: "Blog" },
-  { to: "/contact", label: "Contact" },
+  { to: "user", title: "Dashboard", role: 0 },
+  {
+    to: "promotion",
+    title: "Promotion",
+    role: 1,
+    subMenu: [
+      {
+        title: "Promo Codes",
+        to: "promocode",
+      },
+      {
+        title: "Add Promo Codes",
+        to: "addpromocode",
+      },
+    ],
+  },
+  { to: "orders", title: "Orders", role: 1 },
+  { to: "products", title: "Products", role: 1 },
+  { to: "profile", title: "Profile", role: 1 },
+  { to: "profile", title: "Profile", role: 0 },
+  { to: "/", title: "Back to Home", role: 0 },
+  { to: "/", title: "Back to Home", role: 1 },
 ];
