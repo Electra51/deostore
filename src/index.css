@@ -15,7 +15,8 @@ body {
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
-  color: black;
+  color: #1a1a1a;
+  background: #fafafa;
 }
 @font-face {
   font-family: "axiformaregular";
