@@ -5,7 +5,7 @@ import HelmetHooks from "../../hooks/HelmetHooks";
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="h-[100vh]">
       <HelmetHooks title={"Deostore | home"} />
       <Navbar />
       <Outlet />

@@ -10,7 +10,10 @@ import { MdLogout } from "react-icons/md";
 import { BiSolidDashboard } from "react-icons/bi";
 import profileImg from "../../assets/woman.png";
 import { toast } from "react-toastify";
+import { useSearch } from "../../context/search";
+import { useCart } from "../../context/cart";
 const Navbar = () => {
+  const [cart, setCart] = useCart();
   const [auth, setAuth] = useAuth();
   const handleLogout = () => {
     setAuth({
@@ -21,12 +24,20 @@ const Navbar = () => {
     localStorage.removeItem("auth");
     toast.success("logout successfully");
   };
+  const { searchQuery, updateSearchQuery } = useSearch();
+  console.log("Search Query in Navbar:", searchQuery);
+
+  const handleInputChange = (e) => {
+    updateSearchQuery(e.target.value);
+  };
   const items = (
     <>
       <div className="relative">
         <input
           type="text"
           placeholder="Search"
+          onChange={handleInputChange}
+          value={searchQuery}
           className="input placeholder:text-[#CBCBCB] placeholder:text-[14px] border-0 rounded-none border-b border-b-[#CBCBCB] input-[#EFEFEF] w-[220px] md:w-[270px] lg:w-[450px] h-[50px] px-6"
         />
         <IoSearchOutline className="text-[#999999] text-xl absolute right-[-95px] md:right-6 lg:left-0 top-3.5" />
@@ -65,13 +76,15 @@ const Navbar = () => {
           <div className="hidden lg:flex">
             <ul className="menu menu-horizontal px-1">{items}</ul>
           </div>
-          <div className="hidden lg:flex justify-center items-center gap-3 hover:bg-base-200 rounded-full cursor-pointer px-2 py-1">
+          <Link
+            to="/cart"
+            className="hidden lg:flex justify-center items-center gap-3 hover:bg-base-200 rounded-full cursor-pointer px-2 py-1">
             <RiShoppingCartLine className="w-[30px] h-[30px]" />{" "}
             <h2 className="text-xl text-[#2B2B2B] font-semibold">Cart</h2>
             <h2 className="h-[22px] w-[22px] rounded-full bg-[#FCEE26] flex justify-center items-center text-[14px]">
-              8
+              {cart?.length}
             </h2>
-          </div>
+          </Link>
           <div tabIndex={0} role="button" className="lg:hidden">
             <div className="indicator">
               <RiShoppingCartLine className="w-[24px] h-[24px]" />

@@ -6,14 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./context/auth";
+import { SearchProvider } from "./context/search";
+import { CartProvider } from "./context/cart";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
 
   <AuthProvider>
-    {" "}
-    <App />
-    <ToastContainer />
+    <SearchProvider>
+      <CartProvider>
+        <App />
+        <ToastContainer />
+      </CartProvider>{" "}
+    </SearchProvider>
   </AuthProvider>
 
   // </React.StrictMode>

@@ -17,7 +17,12 @@ const ProductsPage = () => {
       toast.error("Someething Went Wrong");
     }
   };
-
+  // calculate discounted price
+  const calculateDiscountedPrice = (price, discount) => {
+    if (!price || !discount) return 0;
+    const discountedAmount = (price * discount) / 100;
+    return price - discountedAmount;
+  };
   //lifecycle method
   useEffect(() => {
     getAllProducts();
@@ -55,7 +60,11 @@ const ProductsPage = () => {
               </div>
               <div className="w-[192px] flex justify-between items-center">
                 <p className="text-[18px] text-[#2B2B2B]">
-                  BDT. {product?.price}
+                  BDT.{" "}
+                  {calculateDiscountedPrice(
+                    product?.price,
+                    product?.discount
+                  ).toFixed(2)}
                 </p>
                 <p className="h-[25px] w-[47px] bg-[#FFEE00] rounded flex justify-center items-center">
                   {product?.discount}%

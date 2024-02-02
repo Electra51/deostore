@@ -16,6 +16,7 @@ import ProductsPage from "../Pages/DashboardPage/AdminPages/ProductsPage";
 import AdminDashboard from "../Pages/DashboardPage/AdminPages/AdminDashboard";
 import AddProducts from "../Pages/DashboardPage/AdminPages/AddProducts";
 import UpdateProduct from "../Pages/DashboardPage/AdminPages/UpdateProduct";
+import CartPage from "../Pages/CartPage/CartPage";
 // import DashboardLayout from "../components/Layouts/DashboardLayout";
 // import UserDashboard from "../Pages/DashboardPage/UserPages/UserDashboard";
 // import ProfilePage from "../Pages/ProfilePage/ProfilePage";
@@ -35,6 +36,10 @@ const routes = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
       },
       // {
       //   path: "dashboard/user",
