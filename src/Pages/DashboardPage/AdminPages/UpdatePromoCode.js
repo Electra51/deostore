@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdOutlineDeleteOutline } from "react-icons/md";
 import { Switch, Space } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
+import SuccessModal from "../../../components/common/SuccessModal";
 
 const UpdatePromoCode = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const [updatePromoVisible, setUpdatePromoVisible] = useState(false);
   const [promoCodee, setPromoCodee] = useState("");
   const [discount, setDiscount] = useState("");
   const [useTime, setUseTime] = useState("");
@@ -18,17 +19,9 @@ const UpdatePromoCode = () => {
   const handleToggle = (checked) => {
     setActive(checked);
   };
-  console.log(params.id);
-  const resetForm = () => {
-    setPromoCodee("");
-    setDiscount("");
-    setUseTime("");
-    setStartDate("");
-    setEndDate("");
-    setActive(true);
-  };
+
+  // Convert value to uppercase
   const setPromoCodees = (value) => {
-    // Convert value to uppercase before setting it in the state
     const uppercaseValue = value.toUpperCase();
     setPromoCodee(uppercaseValue);
   };
@@ -36,7 +29,7 @@ const UpdatePromoCode = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/api/v1/promocodes/get-promocode/${params.id}`
+        `${process.env.REACT_APP_API}/api/v1/promocodes/get-promocode/${params.id}`
       );
       console.log("data.product.name", data.promoCode);
 
@@ -74,36 +67,21 @@ const UpdatePromoCode = () => {
       productData.append("active", active);
 
       const { data } = axios.put(
-        `http://localhost:8080/api/v1/promocodes/update-promocode/${id}`,
+        `${process.env.REACT_APP_API}/api/v1/promocodes/update-promocode/${id}`,
         productData
       );
-      if (data?.success) {
-        toast.error(data?.message);
-      } else {
-        toast.success("Product Updated Successfully");
-        navigate("http://localhost:3000/dashboard/promocode");
-      }
+      console.log("add", data);
+      setUpdatePromoVisible(true);
+      setTimeout(() => {
+        setUpdatePromoVisible(false);
+        navigate("/dashboard/promocode");
+      }, 2000);
     } catch (error) {
       console.log(error);
       toast.error("something went wrong");
     }
   };
 
-  //   //delete a product
-  //   const handleDelete = async () => {
-  //     try {
-  //       let answer = window.prompt("Are You Sure want to delete this product ? ");
-  //       if (!answer) return;
-  //       const { data } = await axios.delete(
-  //         `http://localhost:8080/api/v1/products/delete-product/${id}`
-  //       );
-  //       toast.success("Product DEleted Succfully");
-  //       navigate("/dashboard/products");
-  //     } catch (error) {
-  //       console.log(error);
-  //       toast.error("Something went wrong");
-  //     }
-  //   };
   return (
     <div
       className="w-[296px] h-[555px] rounded-[15px] mx-auto pt-6 mt-6"
@@ -176,7 +154,6 @@ const UpdatePromoCode = () => {
             <p className="text-[14px] mb-1">Active</p>
           </label>
           <Space direction="vertical">
-            {/* Custom Switch with "Yes" and "No" labels */}
             <Switch
               checkedChildren="Yes"
               unCheckedChildren="No"
@@ -192,11 +169,12 @@ const UpdatePromoCode = () => {
           onClick={handleUpdate}>
           <p className="text-[14px]">Update PromoCode</p>
         </button>{" "}
-        {/* <MdOutlineDeleteOutline
-          onClick={handleDelete}
-          className="mt-6 text-4xl bg-[#FFF700] rounded-full p-2 text-red-500 border border-red-500"
-        /> */}
       </div>
+      <SuccessModal
+        visible={updatePromoVisible}
+        setVisible={setUpdatePromoVisible}
+        title={"Your Promo Code updateed Successfully"}
+      />
     </div>
   );
 };

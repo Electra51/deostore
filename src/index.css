@@ -45,3 +45,9 @@ h3 {
   color: #000000;
   font-weight: 600;
 }
+.p-dialog-header {
+  visibility: hidden;
+}
+.p-dialog-mask {
+  background-color: #00000078;
+}

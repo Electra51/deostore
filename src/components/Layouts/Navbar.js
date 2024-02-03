@@ -12,8 +12,9 @@ import profileImg from "../../assets/woman.png";
 import { toast } from "react-toastify";
 import { useSearch } from "../../context/search";
 import { useCart } from "../../context/cart";
+
 const Navbar = () => {
-  const [cart, setCart] = useCart();
+  const [cart] = useCart();
   const [auth, setAuth] = useAuth();
   const handleLogout = () => {
     setAuth({
@@ -26,11 +27,11 @@ const Navbar = () => {
     toast.success("logout successfully");
   };
   const { searchQuery, updateSearchQuery } = useSearch();
-  console.log("Search Query in Navbar:", searchQuery);
 
   const handleInputChange = (e) => {
     updateSearchQuery(e.target.value);
   };
+
   const items = (
     <>
       <div className="relative">
@@ -45,6 +46,7 @@ const Navbar = () => {
       </div>
     </>
   );
+
   return (
     <div className="border-b border-[#ECECEC]">
       <div className="navbar max-w-[1366px] h-20 mx-auto">
@@ -66,7 +68,7 @@ const Navbar = () => {
               src={navLogo}
               alt=""
               className="w-[50px] lg:w-[90px] h-[40px] lg:h-[70px]"
-            />{" "}
+            />
             <h1 className="mt-2 text-[19px] lg:text-[25px] font-bold">
               Deo<span className="text-[#fcee26]">St</span>ore
             </h1>

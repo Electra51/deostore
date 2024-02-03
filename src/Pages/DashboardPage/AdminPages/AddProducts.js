@@ -57,7 +57,7 @@ const AddProducts = () => {
         navigate("/dashboard/products");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.data?.response?.data?.error);
       toast.error("something went wrong");
     }
   };

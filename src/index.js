@@ -8,18 +8,21 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./context/auth";
 import { SearchProvider } from "./context/search";
 import { CartProvider } from "./context/cart";
+import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-
-  <AuthProvider>
-    <SearchProvider>
-      <CartProvider>
-        <App />
-        <ToastContainer />
-      </CartProvider>{" "}
-    </SearchProvider>
-  </AuthProvider>
+  <PrimeReactProvider>
+    <AuthProvider>
+      <SearchProvider>
+        <CartProvider>
+          <App />
+          <ToastContainer />
+        </CartProvider>{" "}
+      </SearchProvider>
+    </AuthProvider>
+  </PrimeReactProvider>
 
   // </React.StrictMode>
 );

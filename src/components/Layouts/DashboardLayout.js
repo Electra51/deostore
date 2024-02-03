@@ -12,7 +12,7 @@ const DashboardLayout = () => {
         <DashboardNavbar />
         <div className="flex ">
           <SideBar />
-          <div className="w-full">
+          <div className="w-full bg-[#FAFAFA]">
             <Outlet />
           </div>
         </div>

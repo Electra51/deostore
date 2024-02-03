@@ -3,6 +3,7 @@ import { Switch, Space } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import SuccessModal from "../../../components/common/SuccessModal";
 
 const AddPromoCode = () => {
   const [promoCodee, setPromoCodee] = useState("");
@@ -10,19 +11,12 @@ const AddPromoCode = () => {
   const [useTime, setUseTime] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
+  const [addPromoVisible, setAddPromoVisible] = useState(false);
   const [active, setActive] = useState(true);
   const navigate = useNavigate();
-  const resetForm = () => {
-    setPromoCodee("");
-    setDiscount("");
-    setUseTime("");
-    setStartDate("");
-    setEndDate("");
-    setActive(true);
-  };
+
+  // Convert value to uppercase
   const setPromoCodees = (value) => {
-    // Convert value to uppercase before setting it in the state
     const uppercaseValue = value.toUpperCase();
     setPromoCodee(uppercaseValue);
   };
@@ -32,6 +26,36 @@ const AddPromoCode = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    let isValid = true;
+
+    if (!promoCodee) {
+      toast.error("Please enter Promo Code");
+      isValid = false;
+    }
+
+    if (!startDate) {
+      toast.error("Please enter Start Date");
+      isValid = false;
+    }
+
+    if (!endDate) {
+      toast.error("Please enter End Date");
+      isValid = false;
+    }
+
+    if (!discount) {
+      toast.error("Please enter Discount Rate");
+      isValid = false;
+    }
+
+    if (!useTime) {
+      toast.error("Please enter Use Time");
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
     try {
       const productData = new FormData();
       productData.append("name", promoCodee);
@@ -39,23 +63,19 @@ const AddPromoCode = () => {
       productData.append("discount_rate", discount);
       productData.append("end_date", endDate);
       productData.append("use_time", useTime);
-
       productData.append("active", active);
-      //   console.log("hi", productData);
       const { data } = axios.post(
-        "http://localhost:8080/api/v1/promocodes/create-promocode",
+        `${process.env.REACT_APP_API}/api/v1/promocodes/create-promocode`,
         productData
       );
-      if (data?.success) {
-        console.log("add", data);
-        toast.error(data?.message);
-      } else {
-        toast.success("Product Created Successfully");
-        // resetForm(); // Reset the form fields
-        // navigate("/dashboard/products");
-      }
+
+      setAddPromoVisible(true);
+      setTimeout(() => {
+        setAddPromoVisible(false);
+        navigate("/dashboard/promocode");
+      }, 2000);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response);
       toast.error("something went wrong");
     }
   };
@@ -129,7 +149,6 @@ const AddPromoCode = () => {
             <p className="text-[14px] mb-1">Active</p>
           </label>
           <Space direction="vertical">
-            {/* Custom Switch with "Yes" and "No" labels */}
             <Switch
               checkedChildren="Yes"
               unCheckedChildren="No"
@@ -143,9 +162,15 @@ const AddPromoCode = () => {
         <button
           className="bg-[#FFF700] w-[134px] h-[45px] rounded-[23px] mt-6"
           onClick={handleCreate}>
-          <p className="text-[14px]"> Add</p>
+          <p className="text-[14px] font-medium"> Add</p>
         </button>
       </div>
+
+      <SuccessModal
+        visible={addPromoVisible}
+        setVisible={setAddPromoVisible}
+        title={"Your Promo Code Added Successfully"}
+      />
     </div>
   );
 };

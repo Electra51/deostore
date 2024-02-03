@@ -18,15 +18,16 @@ const UpdateProduct = () => {
   const [photo, setPhoto] = useState("");
   const [active, setActive] = useState(true);
   const [id, setId] = useState("");
+
   const handleToggle = (checked) => {
     setActive(checked);
   };
-  console.log(params.id);
+
   //get single product
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/api/v1/products/get-product/${params.id}`
+        `${process.env.REACT_APP_API}/api/v1/products/get-product/${params.id}`
       );
       console.log("data.product.name", data);
       setName(data.product?.name);
@@ -64,7 +65,7 @@ const UpdateProduct = () => {
       photo && productData.append("photo", photo);
 
       const { data } = axios.put(
-        `http://localhost:8080/api/v1/products/update-product/${id}`,
+        `${process.env.REACT_APP_API}/api/v1/products/update-product/${id}`,
         productData
       );
       if (data?.success) {
@@ -85,7 +86,7 @@ const UpdateProduct = () => {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
       const { data } = await axios.delete(
-        `http://localhost:8080/api/v1/products/delete-product/${id}`
+        `${process.env.REACT_APP_API}/api/v1/products/delete-product/${id}`
       );
       toast.success("Product DEleted Succfully");
       navigate("/dashboard/products");
