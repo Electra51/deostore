@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HelmetHooks from "../../../hooks/HelmetHooks";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context/auth";
 const Signin = () => {
+  const [promoCode, setPromoCode] = useState(null);
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,8 +14,23 @@ const Signin = () => {
     phone: "",
     password: "",
   });
-  console.log("location.state", location);
-  console.log("location.state", location.state);
+  // console.log("location.state", location);
+  // useEffect(() => {
+  //   const fetchPromoCode = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:8080/api/v1/promocodes/get-promo-code-user"
+  //       );
+  //       setPromoCode(response.data.promoCode);
+  //       console.log("response.data.promoCode", response.data.promoCode);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   fetchPromoCode();
+  // }, []);
+  // console.log("location.state", location.state);
   const handleSignIn = async (e) => {
     e.preventDefault();
 
@@ -36,6 +52,17 @@ const Signin = () => {
           token: res.data.token,
         });
         localStorage.setItem("auth", JSON.stringify(res?.data));
+        const promoCodeResponse = await axios.get(
+          "http://localhost:8080/api/v1/promocodes/get-promo-code-user"
+        );
+
+        console.log(promoCodeResponse);
+
+        setPromoCode(promoCodeResponse.data.promoCode);
+        localStorage.setItem(
+          "promo",
+          JSON.stringify(promoCodeResponse.data.promoCode)
+        );
         navigate(location.state || "/");
         // navigate(previousState.from);
       } else {
@@ -45,9 +72,12 @@ const Signin = () => {
       console.log(err);
     }
   };
+
+  console.log(promoCode);
   return (
     <div>
       <HelmetHooks title={"Signin | Deostore"} />
+
       <div className="flex justify-center items-center h-[100vh] mx-auto">
         <form
           onSubmit={handleSignIn}

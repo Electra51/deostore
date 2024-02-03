@@ -5,13 +5,22 @@ import { useAuth } from "../../context/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineDeleteOutline, MdPlusOne } from "react-icons/md";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import axios from "axios";
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
   const navigate = useNavigate();
   const location = useLocation();
+  const [promoDataset, setPromoDataset] = useState();
+  const [enteredPromoCode, setEnteredPromoCode] = useState("");
+  const [promoDiscount, setPromoDiscount] = useState(0);
   const [quantities, setQuantities] = useState({});
-
+  const [promoCodeError, setPromoCodeError] = useState();
+  const [checkboxError, setCheckboxError] = useState();
+  useEffect(() => {
+    const promoData = localStorage.getItem("promo");
+    setPromoDataset(JSON.parse(promoData));
+  }, []);
   // Load quantities from localStorage on component mount
   useEffect(() => {
     const storedQuantities = localStorage.getItem("quantities");
@@ -20,7 +29,60 @@ const CartPage = () => {
     }
   }, []);
 
+  const handlePromoCodeChange = (e) => {
+    setEnteredPromoCode(e.target.value);
+  };
+
+  const applyPromoCode = async () => {
+    try {
+      // Make an API call to validate and apply the promo code
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/promocodes/apply-promo-code",
+        {
+          promoCode: enteredPromoCode,
+        }
+      );
+
+      if (response.data.success) {
+        // Update the discount rate in the state or perform the necessary actions
+        const promoDiscountRate = response.data.discountRate;
+        console.log("response.data.success", response.data?.discountRate);
+        setPromoDiscount(response?.data?.discountRate);
+        // Update your state or display the discount rate as needed
+      } else {
+        // Handle invalid promo code case
+        console.error("Invalid promo code");
+        // Display an error message or handle it based on your requirements
+      }
+    } catch (error) {
+      console.error(error?.response?.data?.message);
+      setPromoCodeError(error?.response?.data?.message);
+      // Handle the error, display an error message, or take appropriate action
+    }
+  };
+
   // Update localStorage whenever quantities change
+
+  const [termsAgreed, setTermsAgreed] = useState(false);
+
+  // ... (your existing useEffect and other functions)
+
+  const handleCheckboxChange = () => {
+    setTermsAgreed(!termsAgreed);
+  };
+
+  const handleCheckout = () => {
+    if (termsAgreed) {
+      // Proceed with checkout logic
+      console.log("Checkout logic here");
+    } else {
+      // Display error message for unchecked checkbox
+      console.error("You must agree to the terms and conditions");
+      setCheckboxError("You must agree to the terms and conditions");
+      // Set error state or display error message as needed
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem("quantities", JSON.stringify(quantities));
   }, [quantities]);
@@ -91,11 +153,30 @@ const CartPage = () => {
     return subShippingCharge.toFixed(2);
   };
 
+  // const calculateTotalPayable = () => {
+  //   let subShippingCharge =
+  //     parseFloat(calculateSubtotal()) +
+  //     parseFloat(calculateShippingChargeForsub());
+  //   return subShippingCharge.toFixed(2);
+  // };
+
   const calculateTotalPayable = () => {
-    let subShippingCharge =
+    const subShippingCharge =
       parseFloat(calculateSubtotal()) +
       parseFloat(calculateShippingChargeForsub());
-    return subShippingCharge.toFixed(2);
+
+    const totalPayableWithoutDiscount = subShippingCharge.toFixed(2);
+
+    // Apply promo discount if available
+    if (promoDiscount) {
+      const promoDiscountAmount = (subShippingCharge * promoDiscount) / 100;
+      const totalPayableWithDiscount = (
+        subShippingCharge - promoDiscountAmount
+      ).toFixed(2);
+      return totalPayableWithDiscount;
+    }
+
+    return totalPayableWithoutDiscount;
   };
 
   return (
@@ -105,7 +186,7 @@ const CartPage = () => {
         style={{ boxShadow: "0px 3px 6px #8A8A8A19" }}>
         <p>Go Back</p>
       </button>
-      {location.pathname}
+
       <h1 className="text-center bg-light p-2 mb-1">
         {!auth?.user
           ? "Hello Guest"
@@ -118,7 +199,7 @@ const CartPage = () => {
             : " Your Cart Is Empty"}
         </p>
       </h1>
-      <div className="grid grid-cols-3 mt-10 gap-[39px]">
+      <div className="grid grid-cols-3 justify-items-center mt-10 gap-[39px]">
         <div
           className="col-span-2 border w-[897px] h-[386px] rounded-[10px] bg-[#FFFFFF]"
           style={{ boxShadow: "0px 0px 6px #C9C9C919" }}>
@@ -202,77 +283,107 @@ const CartPage = () => {
               </div>
             );
           })}
-          <div className="flex justify-between items-center p-3">
-            <div className="flex justify-normal items-center gap-2">
-              {" "}
-              <input
-                type="radio"
-                name="radio-4"
-                className="radio radio-warning h-[20px] w-[20px]"
-              />
-              <p className="text-[14px]">
-                I agree to the Terms and Conditions, Privacy Policy & Refund
-                Policy.
-              </p>
-            </div>
-            <div className="w-[219px] h-[44px] bg-[#FFF700] flex justify-center items-center">
-              <p className="text-[14px]">CHECKOUT</p>
+          <div>
+            <div className="flex justify-between items-center p-3">
+              <div className="flex justify-normal items-center gap-2">
+                {" "}
+                <input
+                  type="radio"
+                  name="termsCheckbox"
+                  checked={termsAgreed}
+                  onChange={handleCheckboxChange}
+                  className="radio radio-warning h-[20px] w-[20px]"
+                />
+                <div>
+                  {" "}
+                  {checkboxError && (
+                    <p className="text-[12px] text-red-500">{checkboxError}</p>
+                  )}{" "}
+                  <p className="text-[14px]">
+                    I agree to the Terms and Conditions, Privacy Policy & Refund
+                    Policy.
+                  </p>
+                </div>
+              </div>
+              <div
+                className="w-[219px] h-[44px] bg-[#FFF700] flex justify-center items-center"
+                onClick={handleCheckout}>
+                <p className="text-[14px]">CHECKOUT</p>
+              </div>
             </div>
           </div>
         </div>
-        <div
-          className="border w-[284px] h-[320px] rounded-[10px] bg-[#FFFFFF]"
-          style={{ boxShadow: "0px 0px 6px #C9C9C919" }}>
-          <p className="text-[14px] p-3 text-center">ORDER SUMMARY</p>
-          <div className="bg-[#ECECEC] w-[284px] h-[1px]"></div>
-          <div className="text-[14px] flex justify-between items-center p-3">
-            <p>Subtotal(2 items)</p>
-            <p className="flex justify-center items-center">
-              <TbCurrencyTaka /> {calculateSubtotal()}
-            </p>
-          </div>
-          <div className="text-[14px] flex justify-between items-center px-3 py-0">
-            <p>Discount</p>
-            <p className="flex justify-center items-center">
-              <TbCurrencyTaka /> 0
-            </p>
-          </div>
-          <div className="text-[14px] flex justify-between items-center p-3">
-            <p>Shippung Charge</p>
-            <p className="flex justify-center items-center">
-              <TbCurrencyTaka /> {calculateShippingChargeForsub()}
-            </p>
-          </div>
-          <div className="text-[14px] flex justify-between items-center px-3 pb-3">
-            <p>Wallet Debit</p>
-            <p className="flex justify-center items-center">
-              <TbCurrencyTaka /> 0
-            </p>
-          </div>
-          <div className="w-[284px] flex justify-center items-center border-0 border-b border-t border-dashed border-[#ECECEC] h-[60px] relative">
-            <input
-              type="text"
-              name="name"
-              className="input placeholder:text-[#CBCBCB] placeholder:text-[14px] border-[#E8E8E8] input-[#EFEFEF] w-[242px] mx-auto h-[35px] rounded-[4px]"
-            />
-            {!auth.user ? (
-              <Link
-                to="/signin"
-                state={{ fromCart: true }}
-                className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
-                Apply
-              </Link>
-            ) : (
-              <p className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
-                Apply
+        <div>
+          {promoDataset && (
+            <div className="py-3">
+              <p className="text-[14px] text-center">
+                Your Promo Code: {promoDataset?.name}
+              </p>
+            </div>
+          )}
+
+          <div
+            className="border w-[284px] h-[320px] rounded-[10px] bg-[#FFFFFF]"
+            style={{ boxShadow: "0px 0px 6px #C9C9C919" }}>
+            <p className="text-[14px] p-3 text-center">ORDER SUMMARY</p>
+            <div className="bg-[#ECECEC] w-[284px] h-[1px]"></div>
+            <div className="text-[14px] flex justify-between items-center p-3">
+              <p>Subtotal(2 items)</p>
+              <p className="flex justify-center items-center">
+                <TbCurrencyTaka /> {calculateSubtotal()}
+              </p>
+            </div>
+            <div className="text-[14px] flex justify-between items-center px-3 py-0">
+              <p>Discount</p>
+              <p className="flex justify-center items-center">
+                {promoDiscount} %
+              </p>
+            </div>
+            <div className="text-[14px] flex justify-between items-center p-3">
+              <p>Shippung Charge</p>
+              <p className="flex justify-center items-center">
+                <TbCurrencyTaka /> {calculateShippingChargeForsub()}
+              </p>
+            </div>
+            <div className="text-[14px] flex justify-between items-center px-3 pb-3">
+              <p>Wallet Debit</p>
+              <p className="flex justify-center items-center">
+                <TbCurrencyTaka /> 0
+              </p>
+            </div>
+            <div className="w-[284px] flex justify-center items-center border-0 border-b border-t border-dashed border-[#ECECEC] h-[60px] relative">
+              <input
+                type="text"
+                name="name"
+                value={enteredPromoCode}
+                onChange={handlePromoCodeChange}
+                className="input placeholder:text-[#CBCBCB] placeholder:text-[14px] border-[#E8E8E8] input-[#EFEFEF] w-[242px] mx-auto h-[35px] rounded-[4px]"
+              />
+              {!auth.user ? (
+                <button
+                  onClick={applyPromoCode}
+                  className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
+                  Apply
+                </button>
+              ) : (
+                <button
+                  onClick={applyPromoCode}
+                  className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
+                  Apply
+                </button>
+              )}
+            </div>
+            {promoCodeError && (
+              <p className="text-red-500 text-[12px] text-center">
+                {promoCodeError}
               </p>
             )}
-          </div>
-          <div className="text-[14px] flex justify-between items-center px-3 pt-6">
-            <p>Total Payable</p>
-            <p className="flex justify-center items-center">
-              <TbCurrencyTaka /> {calculateTotalPayable()}
-            </p>
+            <div className="text-[14px] flex justify-between items-center px-3 pt-4 pb-3">
+              <p>Total Payable</p>
+              <p className="flex justify-center items-center">
+                <TbCurrencyTaka /> {calculateTotalPayable()}
+              </p>
+            </div>
           </div>
         </div>
       </div>

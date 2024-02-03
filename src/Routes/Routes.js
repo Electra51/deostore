@@ -21,6 +21,7 @@ import Promotion from "../Pages/DashboardPage/AdminPages/Promotion";
 import AddPromoCode from "../Pages/DashboardPage/AdminPages/AddPromoCode";
 import PromoCodes from "../Pages/DashboardPage/AdminPages/PromoCodes";
 import UpdatePromoCode from "../Pages/DashboardPage/AdminPages/UpdatePromoCode";
+import AddPromoCodesss from "../Pages/DashboardPage/UserPages/AddPromoCodesss";
 // import DashboardLayout from "../components/Layouts/DashboardLayout";
 // import UserDashboard from "../Pages/DashboardPage/UserPages/UserDashboard";
 // import ProfilePage from "../Pages/ProfilePage/ProfilePage";
@@ -44,6 +45,10 @@ const routes = createBrowserRouter([
       {
         path: "/cart",
         element: <CartPage />,
+      },
+      {
+        path: "add", // Fix: Updated path
+        element: <AddPromoCodesss />,
       },
       // {
       //   path: "dashboard/user",

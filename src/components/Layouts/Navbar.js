@@ -22,6 +22,7 @@ const Navbar = () => {
       token: "",
     });
     localStorage.removeItem("auth");
+    localStorage.removeItem("promo");
     toast.success("logout successfully");
   };
   const { searchQuery, updateSearchQuery } = useSearch();
