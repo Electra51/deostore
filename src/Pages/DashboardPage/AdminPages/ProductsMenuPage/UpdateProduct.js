@@ -4,6 +4,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import { Switch, Space } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
+import SuccessModal from "../../../../components/common/SuccessModal";
 
 const UpdateProduct = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const UpdateProduct = () => {
   const [price, setPrice] = useState("");
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
+  const [updateProductVisible, setUpdateProductVisible] = useState(false);
   const [shippingCharge, setshippingCharge] = useState("");
   const [shippingMethod, setShippingMethod] = useState("");
   const [photo, setPhoto] = useState("");
@@ -68,12 +70,11 @@ const UpdateProduct = () => {
         `${process.env.REACT_APP_API}/api/v1/products/update-product/${id}`,
         productData
       );
-      if (data?.success) {
-        toast.error(data?.message);
-      } else {
-        toast.success("Product Updated Successfully");
+      setUpdateProductVisible(true);
+      setTimeout(() => {
+        setUpdateProductVisible(false);
         navigate("/dashboard/products");
-      }
+      }, 2000);
     } catch (error) {
       console.log(error);
       toast.error("something went wrong");
@@ -83,12 +84,14 @@ const UpdateProduct = () => {
   //delete a product
   const handleDelete = async () => {
     try {
-      let answer = window.prompt("Are You Sure want to delete this product ? ");
+      let answer = window.prompt(
+        "Are You Sure want to delete this product ? Type yes if you want to delete or type no"
+      );
       if (!answer) return;
       const { data } = await axios.delete(
         `${process.env.REACT_APP_API}/api/v1/products/delete-product/${id}`
       );
-      toast.success("Product DEleted Succfully");
+      toast.success("This Product Deleted Successfully");
       navigate("/dashboard/products");
     } catch (error) {
       console.log(error);
@@ -112,7 +115,7 @@ const UpdateProduct = () => {
             </div>
           ) : (
             <img
-              src={`http://localhost:8080/api/v1/products/product-photo/${params.id}`}
+              src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${params.id}`}
               alt="product_photo"
               height={"200px"}
               className="h-full w-full object-cover"
@@ -232,6 +235,11 @@ const UpdateProduct = () => {
           />
         </div>
       </div>
+      <SuccessModal
+        visible={updateProductVisible}
+        setVisible={setUpdateProductVisible}
+        title={"Your Products Updated Successfully"}
+      />
     </div>
   );
 };

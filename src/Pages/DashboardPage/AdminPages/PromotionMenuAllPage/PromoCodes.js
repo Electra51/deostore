@@ -9,7 +9,6 @@ const PromoCodes = () => {
   const [promosActive, setPromosActive] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  //getall promo code
   const getAllPromo = async () => {
     try {
       const { data } = await axios.get(

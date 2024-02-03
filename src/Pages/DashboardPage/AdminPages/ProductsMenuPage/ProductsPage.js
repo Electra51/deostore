@@ -5,11 +5,12 @@ import { toast } from "react-toastify";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
-  //getall products
+
+  //product get function
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/products/get-product"
+        `${process.env.REACT_APP_API}/api/v1/products/get-product`
       );
       setProducts(data.products);
     } catch (error) {
@@ -23,22 +24,22 @@ const ProductsPage = () => {
     const discountedAmount = (price * discount) / 100;
     return price - discountedAmount;
   };
-  //lifecycle method
+
   useEffect(() => {
     getAllProducts();
   }, []);
+
   return (
-    <div>
+    <div className="ml-[55px]">
       <Link to="add-products">
-        {" "}
         <button
-          className="w-[189px] h-[45px] mt-[30px] ml-[55px] rounded-[23px]"
+          className="w-[189px] h-[45px] mt-[30px] rounded-[23px] border hover:bg-[#FFF700]"
           style={{ boxShadow: "0px 3px 6px #8A8A8A19" }}>
           <p className="text-[#1A1A1A] text-[14px]">Add New Product</p>
         </button>
       </Link>
 
-      <div className="grid grid-cols-4 gap-[42px] max-w-6xl mx-auto mt-10">
+      <div className="grid grid-cols-4 gap-[42px] max-w-[1300px] my-10">
         {products?.map((product, i) => {
           console.log(product);
           return (
@@ -49,8 +50,7 @@ const ProductsPage = () => {
               style={{ boxShadow: "0px 0px 3px #8A8A8A19" }}>
               <div className="w-[192px] h-[210px]">
                 <img
-                  // src=""
-                  src={`http://localhost:8080/api/v1/products/product-photo/${product?._id}`}
+                  src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${product?._id}`}
                   alt="product image"
                   className="h-full w-full object-cover"
                 />

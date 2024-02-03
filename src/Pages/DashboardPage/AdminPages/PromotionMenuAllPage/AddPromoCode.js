@@ -1,62 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
 import { Switch, Space } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
-import SuccessModal from "../../../components/common/SuccessModal";
+import { useNavigate } from "react-router-dom";
+import SuccessModal from "../../../../components/common/SuccessModal";
 
-const UpdatePromoCode = () => {
-  const navigate = useNavigate();
-  const params = useParams();
-  const [updatePromoVisible, setUpdatePromoVisible] = useState(false);
+const AddPromoCode = () => {
   const [promoCodee, setPromoCodee] = useState("");
   const [discount, setDiscount] = useState("");
   const [useTime, setUseTime] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [addPromoVisible, setAddPromoVisible] = useState(false);
   const [active, setActive] = useState(true);
-  const [id, setId] = useState("");
-  const handleToggle = (checked) => {
-    setActive(checked);
-  };
+  const navigate = useNavigate();
 
   // Convert value to uppercase
   const setPromoCodees = (value) => {
     const uppercaseValue = value.toUpperCase();
     setPromoCodee(uppercaseValue);
   };
-  //get single product
-  const getSingleProduct = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/promocodes/get-promocode/${params.id}`
-      );
-      console.log("data.product.name", data.promoCode);
-
-      setId(data.promoCode?._id);
-      setDiscount(data.promoCode?.discount_rate);
-      setPromoCodee(data.promoCode?.name);
-      setUseTime(data.promoCode?.use_time);
-      setStartDate(
-        new Date(data.promoCode?.start_date).toISOString().split("T")[0]
-      );
-      setEndDate(
-        new Date(data.promoCode?.end_date).toISOString().split("T")[0]
-      );
-
-      setActive(data.promoCode?.active);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleToggle = (checked) => {
+    setActive(checked);
   };
-  useEffect(() => {
-    getSingleProduct();
-    //eslint-disable-next-line
-  }, []);
 
-  //create product function
-  const handleUpdate = async (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
+    let isValid = true;
+
+    if (!promoCodee) {
+      toast.error("Please enter Promo Code");
+      isValid = false;
+    }
+
+    if (!startDate) {
+      toast.error("Please enter Start Date");
+      isValid = false;
+    }
+
+    if (!endDate) {
+      toast.error("Please enter End Date");
+      isValid = false;
+    }
+
+    if (!discount) {
+      toast.error("Please enter Discount Rate");
+      isValid = false;
+    }
+
+    if (!useTime) {
+      toast.error("Please enter Use Time");
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
     try {
       const productData = new FormData();
       productData.append("name", promoCodee);
@@ -65,23 +64,21 @@ const UpdatePromoCode = () => {
       productData.append("end_date", endDate);
       productData.append("use_time", useTime);
       productData.append("active", active);
-
-      const { data } = axios.put(
-        `${process.env.REACT_APP_API}/api/v1/promocodes/update-promocode/${id}`,
+      const { data } = axios.post(
+        `${process.env.REACT_APP_API}/api/v1/promocodes/create-promocode`,
         productData
       );
-      console.log("add", data);
-      setUpdatePromoVisible(true);
+
+      setAddPromoVisible(true);
       setTimeout(() => {
-        setUpdatePromoVisible(false);
+        setAddPromoVisible(false);
         navigate("/dashboard/promocode");
       }, 2000);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response);
       toast.error("something went wrong");
     }
   };
-
   return (
     <div
       className="w-[296px] h-[555px] rounded-[15px] mx-auto pt-6 mt-6"
@@ -92,7 +89,6 @@ const UpdatePromoCode = () => {
             <p className="text-[14px] mb-1">Promo Code</p>
           </label>
           <input
-            readOnly
             type="text"
             name="name"
             value={promoCodee}
@@ -105,7 +101,6 @@ const UpdatePromoCode = () => {
             <p className="text-[14px] mb-1">Start Date</p>
           </label>
           <input
-            readOnly
             type="date"
             name="start_date"
             value={startDate}
@@ -163,20 +158,21 @@ const UpdatePromoCode = () => {
           </Space>
         </div>
       </div>
-      <div className="mb-3 flex justify-center items-center gap-2">
+      <div className="mb-3 flex justify-center items-center">
         <button
-          className="bg-[#FFF700] w-[180px] h-[45px] rounded-[23px] mt-6"
-          onClick={handleUpdate}>
-          <p className="text-[14px]">Update PromoCode</p>
-        </button>{" "}
+          className="bg-[#FFF700] w-[134px] h-[45px] rounded-[23px] mt-6"
+          onClick={handleCreate}>
+          <p className="text-[14px] font-medium"> Add</p>
+        </button>
       </div>
+
       <SuccessModal
-        visible={updatePromoVisible}
-        setVisible={setUpdatePromoVisible}
-        title={"Your Promo Code updateed Successfully"}
+        visible={addPromoVisible}
+        setVisible={setAddPromoVisible}
+        title={"Your Promo Code Added Successfully"}
       />
     </div>
   );
 };
 
-export default UpdatePromoCode;
+export default AddPromoCode;

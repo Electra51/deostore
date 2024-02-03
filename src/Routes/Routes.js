@@ -12,17 +12,16 @@ import AdminRoute from "./AdminRoute";
 import DashboardLayout from "../components/Layouts/DashboardLayout";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import OrdersPage from "../Pages/DashboardPage/AdminPages/OrdersPage";
-import ProductsPage from "../Pages/DashboardPage/AdminPages/ProductsPage";
 import AdminDashboard from "../Pages/DashboardPage/AdminPages/AdminDashboard";
-import AddProducts from "../Pages/DashboardPage/AdminPages/AddProducts";
-import UpdateProduct from "../Pages/DashboardPage/AdminPages/UpdateProduct";
+import AddProducts from "../Pages/DashboardPage/AdminPages/ProductsMenuPage/AddProducts";
+import UpdateProduct from "../Pages/DashboardPage/AdminPages/ProductsMenuPage/UpdateProduct";
 import CartPage from "../Pages/CartPage/CartPage";
-import Promotion from "../Pages/DashboardPage/AdminPages/Promotion";
-import AddPromoCode from "../Pages/DashboardPage/AdminPages/AddPromoCode";
-import PromoCodes from "../Pages/DashboardPage/AdminPages/PromoCodes";
-import UpdatePromoCode from "../Pages/DashboardPage/AdminPages/UpdatePromoCode";
+import AddPromoCode from "../Pages/DashboardPage/AdminPages/PromotionMenuAllPage/AddPromoCode";
+import UpdatePromoCode from "../Pages/DashboardPage/AdminPages/PromotionMenuAllPage/UpdatePromoCode";
 import AddPromoCodesss from "../Pages/DashboardPage/UserPages/AddPromoCodesss";
 import OrderPlacedPage from "../Pages/DashboardPage/UserPages/OrderPlacedPage";
+import ProductsPage from "../Pages/DashboardPage/AdminPages/ProductsMenuPage/ProductsPage";
+import PromoCodes from "../Pages/DashboardPage/AdminPages/PromotionMenuAllPage/PromoCodes";
 // import DashboardLayout from "../components/Layouts/DashboardLayout";
 // import UserDashboard from "../Pages/DashboardPage/UserPages/UserDashboard";
 // import ProfilePage from "../Pages/ProfilePage/ProfilePage";
@@ -116,14 +115,7 @@ const routes = createBrowserRouter([
           </AdminRoute>
         ),
       },
-      {
-        path: "promotion", // Fix: Updated path
-        element: (
-          <AdminRoute>
-            <Promotion />
-          </AdminRoute>
-        ),
-      },
+
       {
         path: "addpromocode", // Fix: Updated path
         element: (

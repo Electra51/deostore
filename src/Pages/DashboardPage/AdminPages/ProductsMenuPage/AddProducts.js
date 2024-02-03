@@ -3,6 +3,7 @@ import { Switch, Space } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import SuccessModal from "../../../../components/common/SuccessModal";
 
 const AddProducts = () => {
   const [name, setName] = useState("");
@@ -14,24 +15,16 @@ const AddProducts = () => {
   const [shippingMethod, setShippingMethod] = useState("");
   const [photo, setPhoto] = useState("");
   const [active, setActive] = useState(true);
+  const [addProductVisible, setAddProductVisible] = useState(false);
   const navigate = useNavigate();
-  const resetForm = () => {
-    setName("");
-    setDiscount("");
-    setPrice("");
-    setColor("");
-    setSize("");
-    setshippingCharge("");
-    setShippingMethod("");
-    setPhoto("");
-    setActive(true);
-  };
   const handleToggle = (checked) => {
     setActive(checked);
   };
+
   //create product function
   const handleCreate = async (e) => {
     e.preventDefault();
+
     try {
       const productData = new FormData();
       productData.append("name", name);
@@ -43,19 +36,16 @@ const AddProducts = () => {
       productData.append("photo", photo);
       productData.append("color", color);
       productData.append("active", active);
-      //   console.log("hi", productData);
       const { data } = axios.post(
-        "http://localhost:8080/api/v1/products/create-product",
+        `${process.env.REACT_APP_API}/api/v1/products/create-product`,
         productData
       );
-      if (data?.success) {
-        console.log("add", data);
-        toast.success("Product Created Successfully");
-      } else {
-        toast.error(data?.response?.data?.error);
-        resetForm(); // Reset the form fields
+
+      setAddProductVisible(true);
+      setTimeout(() => {
+        setAddProductVisible(false);
         navigate("/dashboard/products");
-      }
+      }, 2000);
     } catch (error) {
       console.log(error.data?.response?.data?.error);
       toast.error("something went wrong");
@@ -64,7 +54,7 @@ const AddProducts = () => {
 
   return (
     <div
-      className="w-[296px] h-[864px] rounded-[15px] mx-auto pt-6 mt-6"
+      className="w-[296px] h-[854px] rounded-[15px] mx-auto pt-6 my-8"
       style={{ boxShadow: "0px 3px 6px #0000001C" }}>
       <div className="w-[232px] h-[175px] bg-[#FFF700] mx-auto rounded-[5px]">
         <label className="w-[232px] h-[175px] bg-[#FFF700] mx-auto rounded-[5px]">
@@ -190,7 +180,6 @@ const AddProducts = () => {
             <p className="text-[14px] mb-1">Active</p>
           </label>
           <Space direction="vertical">
-            {/* Custom Switch with "Yes" and "No" labels */}
             <Switch
               checkedChildren="Yes"
               unCheckedChildren="No"
@@ -204,9 +193,15 @@ const AddProducts = () => {
         <button
           className="bg-[#FFF700] w-[134px] h-[45px] rounded-[23px] mt-6"
           onClick={handleCreate}>
-          <p className="text-[14px]"> Add Product</p>
+          <p className="text-[14px] font-medium"> Add Product</p>
         </button>
       </div>
+
+      <SuccessModal
+        visible={addProductVisible}
+        setVisible={setAddProductVisible}
+        title={"Your Product is Added Successfully"}
+      />
     </div>
   );
 };
