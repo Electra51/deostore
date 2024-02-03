@@ -8,10 +8,13 @@ const Signin = () => {
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
   const [value, setValue] = useState({
     phone: "",
     password: "",
   });
+  console.log("location.state", location);
+  console.log("location.state", location.state);
   const handleSignIn = async (e) => {
     e.preventDefault();
 
@@ -34,6 +37,7 @@ const Signin = () => {
         });
         localStorage.setItem("auth", JSON.stringify(res?.data));
         navigate(location.state || "/");
+        // navigate(previousState.from);
       } else {
         toast.error(res.data.message);
       }

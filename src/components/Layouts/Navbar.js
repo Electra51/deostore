@@ -127,9 +127,7 @@ const Navbar = () => {
                 tabIndex={0}
                 className="dropdown-content mt-1 bg-base-100 z-[1] p-2 shadow border  border-[#fcee26] rounded-md w-52">
                 <Link
-                  to={`/dashboard/${
-                    auth?.user?.role === 1 ? "admin" : "user"
-                  }/profile`}
+                  to={`/dashboard/profile`}
                   className="py-2 bg-[#fcee26] !hover:bg-[#fcee26] rounded-md flex justify-start items-center gap-1 pl-10 cursor-pointer">
                   <MdOutlineAccountCircle className="text-xl" />
                   Profile

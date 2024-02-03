@@ -2,15 +2,14 @@ import React from "react";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoMenuOutline, IoSearchOutline } from "react-icons/io5";
 import { LuUser2 } from "react-icons/lu";
-import { MdOutlineAccountCircle } from "react-icons/md";
 import navLogo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import { MdLogout } from "react-icons/md";
-import { BiSolidDashboard } from "react-icons/bi";
 import profileImg from "../../assets/woman.png";
 import { toast } from "react-toastify";
 const DashboardNavbar = () => {
+  const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
   console.log(auth?.user?.name);
   const handleLogout = () => {
@@ -20,6 +19,7 @@ const DashboardNavbar = () => {
       token: "",
     });
     localStorage.removeItem("auth");
+    navigate("/signin");
     toast.success("logout successfully");
   };
 

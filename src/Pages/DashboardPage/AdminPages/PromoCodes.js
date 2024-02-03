@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const PromoCodes = () => {
   const [products, setProducts] = useState([]);
+  const [promosActive, setPromosActive] = useState([]);
   //getall products
   const getAllPromo = async () => {
     try {
@@ -34,6 +35,32 @@ const PromoCodes = () => {
       year: "numeric",
     };
     return new Date(createdAt).toLocaleString("en-US", options);
+  };
+
+  const handleStatusChange = async (id, active) => {
+    try {
+      const { data } = await axios.put(
+        `http://localhost:8080/api/v1/promocodes/update-promocode-status/${id}`,
+        { active: !active }
+      );
+      console.log("hi");
+      if (data.success) {
+        getAllPromo();
+        setPromosActive((prevProducts) =>
+          prevProducts.map((promo) =>
+            promo._id === id ? { ...promo, active: !promo.active } : promo
+          )
+        );
+        toast.success(data.message);
+        console.log("first", data);
+        // Refresh promo codes after status change
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
   };
   return (
     <div>
@@ -66,8 +93,19 @@ const PromoCodes = () => {
                     </button>
                   </Link>
 
-                  <button className="w-[114px] h-[45px] rounded-[23px] bg-[#FFFEE1]">
-                    <p className="text-[#7A4100]">Active</p>
+                  <button
+                    className={`${
+                      promo.active === true ? "bg-[#FFE1E1]" : "bg-[#FFFEE1] "
+                    } w-[114px] h-[45px] rounded-[23px] `}
+                    onClick={() => handleStatusChange(promo._id, promo.active)}>
+                    <p
+                      className={`${
+                        promo.active === true
+                          ? "text-[#FF0729]"
+                          : "text-[#7A4100]"
+                      }`}>
+                      {promo.active === true ? "Deactive" : "Activate"}
+                    </p>
                   </button>
                 </div>
               </div>

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { useCart } from "../../context/cart";
 import { useAuth } from "../../context/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineDeleteOutline, MdPlusOne } from "react-icons/md";
 import { FiMinus, FiPlus } from "react-icons/fi";
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [quantities, setQuantities] = useState({});
 
   // Load quantities from localStorage on component mount
@@ -78,6 +78,26 @@ const CartPage = () => {
 
     return subtotal.toFixed(2);
   };
+
+  const calculateShippingChargeForsub = () => {
+    let subShippingCharge = 0;
+
+    cart.forEach((product) => {
+      const price = product?.shipping_charge;
+      const quantity = quantities[product?._id] || 1;
+      subShippingCharge += price * quantity;
+    });
+
+    return subShippingCharge.toFixed(2);
+  };
+
+  const calculateTotalPayable = () => {
+    let subShippingCharge =
+      parseFloat(calculateSubtotal()) +
+      parseFloat(calculateShippingChargeForsub());
+    return subShippingCharge.toFixed(2);
+  };
+
   return (
     <div className="max-w-[1366px] mx-auto">
       <button
@@ -85,6 +105,7 @@ const CartPage = () => {
         style={{ boxShadow: "0px 3px 6px #8A8A8A19" }}>
         <p>Go Back</p>
       </button>
+      {location.pathname}
       <h1 className="text-center bg-light p-2 mb-1">
         {!auth?.user
           ? "Hello Guest"
@@ -219,7 +240,7 @@ const CartPage = () => {
           <div className="text-[14px] flex justify-between items-center p-3">
             <p>Shippung Charge</p>
             <p className="flex justify-center items-center">
-              <TbCurrencyTaka /> 200
+              <TbCurrencyTaka /> {calculateShippingChargeForsub()}
             </p>
           </div>
           <div className="text-[14px] flex justify-between items-center px-3 pb-3">
@@ -234,14 +255,23 @@ const CartPage = () => {
               name="name"
               className="input placeholder:text-[#CBCBCB] placeholder:text-[14px] border-[#E8E8E8] input-[#EFEFEF] w-[242px] mx-auto h-[35px] rounded-[4px]"
             />
-            <p className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999]">
-              Apply
-            </p>
+            {!auth.user ? (
+              <Link
+                to="/signin"
+                state={{ fromCart: true }}
+                className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
+                Apply
+              </Link>
+            ) : (
+              <p className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
+                Apply
+              </p>
+            )}
           </div>
           <div className="text-[14px] flex justify-between items-center px-3 pt-6">
             <p>Total Payable</p>
             <p className="flex justify-center items-center">
-              <TbCurrencyTaka /> 0
+              <TbCurrencyTaka /> {calculateTotalPayable()}
             </p>
           </div>
         </div>
