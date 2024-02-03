@@ -44,14 +44,19 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import { menus } from "../common/data";
+import { IoIosArrowDown } from "react-icons/io";
 
 const SideBar = () => {
   const [auth, setAuth] = useAuth();
   const [open, setOpen] = useState(false);
-
+  const [subMenuOpen, setSubMenuOpen] = useState(false);
   const toggleSlider = () => {
     setOpen(!open);
   };
+
+  // const toggleSubMenu = (index) => {
+  //   setOpenSubMenu((prevIndex) => (prevIndex === index ? null : index));
+  // };
 
   return (
     <div>
@@ -74,22 +79,36 @@ const SideBar = () => {
               );
             })
             .map((item, i) => (
-              <li key={i} className="px-10 py-3">
-                <NavLink to={item.to} className="">
-                  {item.title}
-                </NavLink>
-                {item.subMenu && (
+              <React.Fragment key={i}>
+                <li className="px-10 py-3">
+                  <NavLink
+                    to={item.to}
+                    className="flex justify-between items-center">
+                    {item.title}{" "}
+                    {item.subMenu && (
+                      <IoIosArrowDown
+                        onClick={() => setSubMenuOpen(!subMenuOpen)}
+                        className={`${subMenuOpen && "rotate-180"}`}
+                      />
+                    )}
+                  </NavLink>
+                </li>
+                {item.subMenu && subMenuOpen && (
                   <ul>
-                    {item.subMenu.map((subItem, j) => (
-                      <li key={j} className="ml-4">
-                        <NavLink to={subItem.to} className="">
-                          {subItem.title}
-                        </NavLink>
+                    {item.subMenu.map((subMenuItem, idx) => (
+                      <li
+                        key={idx}
+                        className="flex px-5 cursor-pointer text-center text-sm text-gray-200 py-1">
+                        <NavLink
+                          to={subMenuItem.to}
+                          className="flex justify-between items-center">
+                          {subMenuItem.title}
+                        </NavLink>{" "}
                       </li>
                     ))}
                   </ul>
                 )}
-              </li>
+              </React.Fragment>
             ))}
         </ul>
       </div>

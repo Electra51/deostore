@@ -17,6 +17,10 @@ import AdminDashboard from "../Pages/DashboardPage/AdminPages/AdminDashboard";
 import AddProducts from "../Pages/DashboardPage/AdminPages/AddProducts";
 import UpdateProduct from "../Pages/DashboardPage/AdminPages/UpdateProduct";
 import CartPage from "../Pages/CartPage/CartPage";
+import Promotion from "../Pages/DashboardPage/AdminPages/Promotion";
+import AddPromoCode from "../Pages/DashboardPage/AdminPages/AddPromoCode";
+import PromoCodes from "../Pages/DashboardPage/AdminPages/PromoCodes";
+import UpdatePromoCode from "../Pages/DashboardPage/AdminPages/UpdatePromoCode";
 // import DashboardLayout from "../components/Layouts/DashboardLayout";
 // import UserDashboard from "../Pages/DashboardPage/UserPages/UserDashboard";
 // import ProfilePage from "../Pages/ProfilePage/ProfilePage";
@@ -99,10 +103,42 @@ const routes = createBrowserRouter([
         ),
       },
       {
+        path: "promotion", // Fix: Updated path
+        element: (
+          <AdminRoute>
+            <Promotion />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "addpromocode", // Fix: Updated path
+        element: (
+          <AdminRoute>
+            <AddPromoCode />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "promocode", // Fix: Updated path
+        element: (
+          <AdminRoute>
+            <PromoCodes />
+          </AdminRoute>
+        ),
+      },
+      {
         path: "products", // Fix: Updated path
         element: (
           <AdminRoute>
             <ProductsPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "promocode/:id", // Fix: Updated path
+        element: (
+          <AdminRoute>
+            <UpdatePromoCode />
           </AdminRoute>
         ),
       },

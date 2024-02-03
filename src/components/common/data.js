@@ -1,7 +1,7 @@
 export const menus = [
   { to: "user", title: "Dashboard", role: 0 },
   {
-    to: "promotion",
+    to: "promocode",
     title: "Promotion",
     role: 1,
     subMenu: [

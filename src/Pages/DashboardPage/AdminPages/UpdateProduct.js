@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 import { Switch, Space } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { MdOutlineDeleteOutline } from "react-icons/md";
+
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const params = useParams();
@@ -143,7 +144,7 @@ const UpdateProduct = () => {
             className="input placeholder:text-[#CBCBCB] placeholder:text-[14px] border-[#E8E8E8] input-[#EFEFEF] w-[232px] h-[35px] rounded-[4px]"
             onChange={(e) => setPrice(e.target.value)}
           />
-        </div>{" "}
+        </div>
         <div className="mb-3">
           <label>
             <p className="text-[14px] mb-1">Discount</p>
@@ -157,7 +158,6 @@ const UpdateProduct = () => {
           />
         </div>
         <div className="mb-3">
-          {" "}
           <label>
             <p className="text-[14px] mb-1">Size</p>
           </label>
@@ -211,7 +211,6 @@ const UpdateProduct = () => {
             <p className="text-[14px] mb-1">Active</p>
           </label>
           <Space direction="vertical">
-            {/* Custom Switch with "Yes" and "No" labels */}
             <Switch
               checkedChildren="Yes"
               unCheckedChildren="No"
@@ -232,107 +231,6 @@ const UpdateProduct = () => {
           />
         </div>
       </div>
-      {/* <div className="col-md-9">
-      
-        <div className="m-1 w-75">
-        
-          <div className="mb-3">
-            <label className="btn btn-outline-secondary col-md-12">
-              {photo ? photo.name : "Upload Photo"}
-              <input
-                type="file"
-                name="photo"
-                accept="image/*"
-                onChange={(e) => setPhoto(e.target.files[0])}
-                hidden
-              />
-            </label>
-          </div>
-          <div className="mb-3">
-            {photo ? (
-              <div className="text-center">
-                <img
-                  src={URL.createObjectURL(photo)}
-                  alt="product_photo"
-                  height={"200px"}
-                  className="img img-responsive"
-                />
-              </div>
-            ) : (
-              <div className="text-center">
-                <img
-                  src={`/api/v1/product/product-photo/${id}`}
-                  alt="product_photo"
-                  height={"200px"}
-                  className="img img-responsive"
-                />
-              </div>
-            )}
-          </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              value={name}
-              placeholder="write a name"
-              className="form-control"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <textarea
-              type="text"
-              value={description}
-              placeholder="write a description"
-              className="form-control"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-
-          <div className="mb-3">
-            <input
-              type="number"
-              value={price}
-              placeholder="write a Price"
-              className="form-control"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="number"
-              value={quantity}
-              placeholder="write a quantity"
-              className="form-control"
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <Select
-              bordered={false}
-              placeholder="Select Shipping "
-              size="large"
-              showSearch
-              className="form-select mb-3"
-              onChange={(value) => {
-                setShipping(value);
-              }}
-              value={shipping ? "yes" : "No"}>
-              <Option value="0">No</Option>
-              <Option value="1">Yes</Option>
-            </Select>
-          </div>
-          <div className="mb-3">
-            <button className="btn btn-primary" onClick={handleUpdate}>
-              UPDATE PRODUCT
-            </button>
-          </div>
-          <div className="mb-3">
-            <button className="btn btn-danger" onClick={handleDelete}>
-              DELETE PRODUCT
-            </button>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

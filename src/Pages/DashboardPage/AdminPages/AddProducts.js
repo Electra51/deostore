@@ -50,9 +50,9 @@ const AddProducts = () => {
       );
       if (data?.success) {
         console.log("add", data);
-        toast.error(data?.message);
-      } else {
         toast.success("Product Created Successfully");
+      } else {
+        toast.error(data?.response?.data?.error);
         resetForm(); // Reset the form fields
         navigate("/dashboard/products");
       }
