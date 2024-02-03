@@ -1,0 +1,15 @@
+ //total price
+  const totalPrice = () => {
+    try {
+      let total = 0;
+      cart?.map((item) => {
+        total = total + item.price;
+      });
+      return total.toLocaleString("en-US", {
+        style: "currency",
+        currency: "BDT",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };

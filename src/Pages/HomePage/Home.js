@@ -134,6 +134,20 @@ const Home = () => {
     console.log("search", searchQuery);
   }, [searchQuery]);
 
+  const addToCart = (product) => {
+    // Check if the product is already in the cart
+    const isProductInCart = cart.some((item) => item._id === product._id);
+
+    if (!isProductInCart) {
+      // Product is not in the cart, add it
+      setCart([...cart, product]);
+      localStorage.setItem("cart", JSON.stringify([...cart, product]));
+      toast.success("Item added to cart");
+    } else {
+      // Product is already in the cart, show a warning
+      toast.warning("Item is already in the cart");
+    }
+  };
   const calculateDiscountedPrice = (price, discount) => {
     if (!price || !discount) return 0;
     const discountedAmount = (price * discount) / 100;
@@ -179,10 +193,7 @@ const Home = () => {
               <div className="absolute inset-0 bg-white rounded-[10px] w-[225px] h-[337px] border opacity-0 hover:opacity-50 transition duration-300 group-hover:opacity-100"></div>
               <button
                 className="absolute bottom-1/2 left-[38%] transform -translate-x-1/2 bg-[#FFEE00] px-4 py-2 rounded-[23px] opacity-0 transition duration-300 group-hover:opacity-100"
-                onClick={() => {
-                  setCart([...cart, product]);
-                  toast.success("Item add to cart");
-                }}>
+                onClick={() => addToCart(product)}>
                 Add to Cart
               </button>
             </div>
