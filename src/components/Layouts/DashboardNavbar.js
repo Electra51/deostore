@@ -25,7 +25,7 @@ const DashboardNavbar = () => {
 
   return (
     <div className="border-b border-[#ECECEC]">
-      <div className="navbar bg-base-100 max-w-[1550px] h-20 mx-auto">
+      <div className="navbar max-w-[1550px] h-20 mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="lg:hidden">

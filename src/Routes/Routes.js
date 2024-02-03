@@ -22,6 +22,7 @@ import AddPromoCode from "../Pages/DashboardPage/AdminPages/AddPromoCode";
 import PromoCodes from "../Pages/DashboardPage/AdminPages/PromoCodes";
 import UpdatePromoCode from "../Pages/DashboardPage/AdminPages/UpdatePromoCode";
 import AddPromoCodesss from "../Pages/DashboardPage/UserPages/AddPromoCodesss";
+import OrderPlacedPage from "../Pages/DashboardPage/UserPages/OrderPlacedPage";
 // import DashboardLayout from "../components/Layouts/DashboardLayout";
 // import UserDashboard from "../Pages/DashboardPage/UserPages/UserDashboard";
 // import ProfilePage from "../Pages/ProfilePage/ProfilePage";
@@ -76,6 +77,14 @@ const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <UserDashboard />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "orders", // Fix: Updated path
+        element: (
+          <PrivateRoute>
+            <OrderPlacedPage />
           </PrivateRoute>
         ),
       },
@@ -164,7 +173,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "orders", // Fix: Updated path
+        path: "admin/orders", // Fix: Updated path
         element: (
           <AdminRoute>
             <OrdersPage />

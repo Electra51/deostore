@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineDeleteOutline, MdPlusOne } from "react-icons/md";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import axios from "axios";
+import { toast } from "react-toastify";
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
@@ -75,6 +76,25 @@ const CartPage = () => {
     if (termsAgreed) {
       // Proceed with checkout logic
       console.log("Checkout logic here");
+      try {
+        // setLoading(true);
+
+        const { data } = axios.post(
+          "http://localhost:8080/api/v1/orders/order-place",
+          {
+            cart,
+          }
+        );
+        console.log("first", data);
+        // setLoading(false);
+        localStorage.removeItem("cart");
+        setCart([]);
+        navigate("/dashboard/orders");
+        toast.success("Order Placed Successfully ");
+      } catch (error) {
+        console.log(error);
+        // setLoading(false);
+      }
     } else {
       // Display error message for unchecked checkbox
       console.error("You must agree to the terms and conditions");
@@ -296,8 +316,10 @@ const CartPage = () => {
                 />
                 <div>
                   {" "}
-                  {checkboxError && (
+                  {checkboxError ? (
                     <p className="text-[12px] text-red-500">{checkboxError}</p>
+                  ) : (
+                    ""
                   )}{" "}
                   <p className="text-[14px]">
                     I agree to the Terms and Conditions, Privacy Policy & Refund
@@ -306,7 +328,7 @@ const CartPage = () => {
                 </div>
               </div>
               <div
-                className="w-[219px] h-[44px] bg-[#FFF700] flex justify-center items-center"
+                className="w-[219px] h-[44px] bg-[#FFF700] flex justify-center items-center cursor-pointer"
                 onClick={handleCheckout}>
                 <p className="text-[14px]">CHECKOUT</p>
               </div>

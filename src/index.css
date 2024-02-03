@@ -4,21 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* * {
-  font-family: "Albert Sans", sans-serif;
+* {
+  /* font-family: "Albert Sans", sans-serif; */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-} */
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  color: #1a1a1a;
-  background: #fafafa;
-  background: red;
 }
+
 @font-face {
   font-family: "axiformaregular";
   src: url(../public/axiforma_regular.woff);
@@ -50,5 +42,6 @@ h3 {
   outline: none;
 }
 .active {
-  background: #fcee26;
+  color: #000000;
+  font-weight: 600;
 }
