@@ -2,27 +2,27 @@ import React, { useEffect, useState } from "react";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { useCart } from "../../context/cart";
 import { useAuth } from "../../context/auth";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MdOutlineDeleteOutline, MdPlusOne } from "react-icons/md";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import axios from "axios";
-import { toast } from "react-toastify";
+import SuccessModal from "../../components/common/SuccessModal";
+
 const CartPage = () => {
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
+  const [checkoutVisible, setCheckoutVisible] = useState(false);
   const [cart, setCart] = useCart();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [promoDataset, setPromoDataset] = useState();
   const [enteredPromoCode, setEnteredPromoCode] = useState("");
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [quantities, setQuantities] = useState({});
   const [promoCodeError, setPromoCodeError] = useState();
   const [checkboxError, setCheckboxError] = useState();
+
   useEffect(() => {
     const promoData = localStorage.getItem("promo");
     setPromoDataset(JSON.parse(promoData));
   }, []);
-  // Load quantities from localStorage on component mount
+
   useEffect(() => {
     const storedQuantities = localStorage.getItem("quantities");
     if (storedQuantities) {
@@ -33,73 +33,53 @@ const CartPage = () => {
   const handlePromoCodeChange = (e) => {
     setEnteredPromoCode(e.target.value);
   };
-
+  //validate and apply the promo code
   const applyPromoCode = async () => {
     try {
-      // Make an API call to validate and apply the promo code
       const response = await axios.post(
-        "http://localhost:8080/api/v1/promocodes/apply-promo-code",
+        `${process.env.REACT_APP_API}/api/v1/promocodes/apply-promo-code`,
         {
           promoCode: enteredPromoCode,
         }
       );
 
       if (response.data.success) {
-        // Update the discount rate in the state or perform the necessary actions
         const promoDiscountRate = response.data.discountRate;
         console.log("response.data.success", response.data?.discountRate);
         setPromoDiscount(response?.data?.discountRate);
-        // Update your state or display the discount rate as needed
       } else {
-        // Handle invalid promo code case
         console.error("Invalid promo code");
-        // Display an error message or handle it based on your requirements
       }
     } catch (error) {
       console.error(error?.response?.data?.message);
       setPromoCodeError(error?.response?.data?.message);
-      // Handle the error, display an error message, or take appropriate action
     }
   };
 
-  // Update localStorage whenever quantities change
-
   const [termsAgreed, setTermsAgreed] = useState(false);
-
-  // ... (your existing useEffect and other functions)
-
   const handleCheckboxChange = () => {
     setTermsAgreed(!termsAgreed);
   };
 
   const handleCheckout = () => {
     if (termsAgreed) {
-      // Proceed with checkout logic
-      console.log("Checkout logic here");
       try {
-        // setLoading(true);
-
         const { data } = axios.post(
-          "http://localhost:8080/api/v1/orders/order-place",
+          `${process.env.REACT_APP_API}/api/v1/orders/order-place`,
           {
             cart,
           }
         );
-        console.log("first", data);
-        // setLoading(false);
         localStorage.removeItem("cart");
         setCart([]);
-        navigate("/dashboard/orders");
-        toast.success("Order Placed Successfully ");
+
+        setCheckoutVisible(true);
       } catch (error) {
         console.log(error);
-        // setLoading(false);
       }
     } else {
-      // Display error message for unchecked checkbox
       console.error("You must agree to the terms and conditions");
       setCheckboxError("You must agree to the terms and conditions");
-      // Set error state or display error message as needed
     }
   };
 
@@ -173,13 +153,6 @@ const CartPage = () => {
     return subShippingCharge.toFixed(2);
   };
 
-  // const calculateTotalPayable = () => {
-  //   let subShippingCharge =
-  //     parseFloat(calculateSubtotal()) +
-  //     parseFloat(calculateShippingChargeForsub());
-  //   return subShippingCharge.toFixed(2);
-  // };
-
   const calculateTotalPayable = () => {
     const subShippingCharge =
       parseFloat(calculateSubtotal()) +
@@ -209,7 +182,7 @@ const CartPage = () => {
 
       <h1 className="text-center bg-light p-2 mb-1">
         {!auth?.user
-          ? "Hello Guest"
+          ? "Hello Friends !"
           : `Hello  ${auth?.token && auth?.user?.name}`}
         <p className="text-center">
           {cart?.length
@@ -231,7 +204,7 @@ const CartPage = () => {
                 <div className=" flex justify-start items-start gap-[16px]">
                   <div className="w-[89px] h-[96px] overflow-hidden">
                     <img
-                      src={`http://localhost:8080/api/v1/products/product-photo/${product?._id}`}
+                      src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${product?._id}`}
                       alt="product image"
                       className="w-full h-full object-cover"
                     />
@@ -409,6 +382,11 @@ const CartPage = () => {
           </div>
         </div>
       </div>
+      <SuccessModal
+        visible={checkoutVisible}
+        setVisible={setCheckoutVisible}
+        title={"Your Order Placed Successfully"}
+      />
     </div>
   );
 };

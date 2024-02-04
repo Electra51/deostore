@@ -1,4 +1,3 @@
-// routes.js
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../components/Layouts/MainLayouts";
@@ -11,28 +10,20 @@ import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import DashboardLayout from "../components/Layouts/DashboardLayout";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
-import OrdersPage from "../Pages/DashboardPage/AdminPages/OrdersPage";
+import OrdersPage from "../Pages/DashboardPage/AdminPages/OrdersMenuPage/OrdersPage";
 import AdminDashboard from "../Pages/DashboardPage/AdminPages/AdminDashboard";
 import AddProducts from "../Pages/DashboardPage/AdminPages/ProductsMenuPage/AddProducts";
 import UpdateProduct from "../Pages/DashboardPage/AdminPages/ProductsMenuPage/UpdateProduct";
 import CartPage from "../Pages/CartPage/CartPage";
 import AddPromoCode from "../Pages/DashboardPage/AdminPages/PromotionMenuAllPage/AddPromoCode";
 import UpdatePromoCode from "../Pages/DashboardPage/AdminPages/PromotionMenuAllPage/UpdatePromoCode";
-import AddPromoCodesss from "../Pages/DashboardPage/UserPages/AddPromoCodesss";
 import OrderPlacedPage from "../Pages/DashboardPage/UserPages/OrderPlacedPage";
 import ProductsPage from "../Pages/DashboardPage/AdminPages/ProductsMenuPage/ProductsPage";
 import PromoCodes from "../Pages/DashboardPage/AdminPages/PromotionMenuAllPage/PromoCodes";
-// import DashboardLayout from "../components/Layouts/DashboardLayout";
-// import UserDashboard from "../Pages/DashboardPage/UserPages/UserDashboard";
-// import ProfilePage from "../Pages/ProfilePage/ProfilePage";
-// import PrivateRoute from "./PrivateRoute";
-// import AdminDashboard from "../Pages/DashboardPage/AdminPages/AdminDashboard";
-// import AdminRoute from "./AdminRoute";
-// import ProductsPage from "../Pages/DashboardPage/AdminPages/ProductsPage";
-// import OrdersPage from "../Pages/DashboardPage/AdminPages/OrdersPage";
+import AdminPanelLogin from "../Pages/AdminPanelLoginPage/AdminPanelLogin";
 
 const routes = createBrowserRouter([
-  // Public routes
+  // All Public routes
   {
     path: "/",
     element: <MainLayout />,
@@ -46,22 +37,10 @@ const routes = createBrowserRouter([
         path: "/cart",
         element: <CartPage />,
       },
-      {
-        path: "add", // Fix: Updated path
-        element: <AddPromoCodesss />,
-      },
-      // {
-      //   path: "dashboard/user",
-      //   element: (
-      //     <PrivateRoute>
-      //       <UserDashboard />
-      //     </PrivateRoute>
-      //   ),
-      // },
     ],
   },
 
-  // // Private routes with authentication check
+  //userDashboard with Private routes
   {
     path: "/dashboard",
     element: (
@@ -72,7 +51,7 @@ const routes = createBrowserRouter([
 
     children: [
       {
-        path: "user", // Fix: Updated path
+        path: "user",
         element: (
           <PrivateRoute>
             <UserDashboard />
@@ -80,7 +59,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "orders", // Fix: Updated path
+        path: "orders",
         element: (
           <PrivateRoute>
             <OrderPlacedPage />
@@ -88,7 +67,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "profile", // Fix: Updated path
+        path: "profile",
         element: (
           <PrivateRoute>
             <ProfilePage />
@@ -97,7 +76,8 @@ const routes = createBrowserRouter([
       },
     ],
   },
-  // Private routes with authentication check
+
+  // Admin routes
   {
     path: "/dashboard",
     element: (
@@ -108,7 +88,7 @@ const routes = createBrowserRouter([
 
     children: [
       {
-        path: "admin", // Fix: Updated path
+        path: "admin",
         element: (
           <AdminRoute>
             <AdminDashboard />
@@ -117,7 +97,7 @@ const routes = createBrowserRouter([
       },
 
       {
-        path: "addpromocode", // Fix: Updated path
+        path: "addpromocode",
         element: (
           <AdminRoute>
             <AddPromoCode />
@@ -125,7 +105,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "promocode", // Fix: Updated path
+        path: "promocode",
         element: (
           <AdminRoute>
             <PromoCodes />
@@ -133,7 +113,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "products", // Fix: Updated path
+        path: "products",
         element: (
           <AdminRoute>
             <ProductsPage />
@@ -141,7 +121,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "promocode/:id", // Fix: Updated path
+        path: "promocode/:id",
         element: (
           <AdminRoute>
             <UpdatePromoCode />
@@ -149,7 +129,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "products/add-products", // Fix: Updated path
+        path: "products/add-products",
         element: (
           <AdminRoute>
             <AddProducts />
@@ -157,7 +137,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "products/:id", // Fix: Updated path
+        path: "products/:id",
         element: (
           <AdminRoute>
             <UpdateProduct />
@@ -165,7 +145,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "admin/orders", // Fix: Updated path
+        path: "admin/orders",
         element: (
           <AdminRoute>
             <OrdersPage />
@@ -173,7 +153,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "profile", // Fix: Updated path
+        path: "profile",
         element: (
           <AdminRoute>
             <ProfilePage />
@@ -182,6 +162,7 @@ const routes = createBrowserRouter([
       },
     ],
   },
+
   // Authentication routes
   {
     path: "/signin",
@@ -190,6 +171,10 @@ const routes = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/admin-panel",
+    element: <AdminPanelLogin />,
   },
 ]);
 

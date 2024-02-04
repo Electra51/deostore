@@ -1,10 +1,11 @@
 import React from "react";
 import { useAuth } from "../../context/auth";
 import profileImg from "../../assets/woman.png";
+
 const ProfilePage = () => {
   const [auth, setAuth] = useAuth();
   return (
-    <div className="flex flex-col h-[50%] justify-center items-center">
+    <div className="flex flex-col h-[50%] justify-center items-center mt-32">
       <div role="button" className="avatar">
         <div className="w-20 rounded-full">
           <img alt="Profile image" src={profileImg} />

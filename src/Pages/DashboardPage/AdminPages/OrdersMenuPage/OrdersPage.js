@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../../context/auth";
 import axios from "axios";
-import moment from "moment";
+import { useAuth } from "../../../../context/auth";
 import AllOrder from "./AllOrder";
 import PendingOrder from "./PendingOrder";
 import ConfirmedOrder from "./ConfirmedOrder";
 import CancelOrder from "./CancelOrder";
 
 const OrdersPage = () => {
-  const [status, setStatus] = useState(["Pending", "Confirm", "cancel"]);
-  const [changeStatus, setCHangeStatus] = useState("");
   const [orders, setOrders] = useState([]);
   const [auth, setAuth] = useAuth();
   const [orderItem, setOrderItem] = useState();
@@ -20,7 +17,7 @@ const OrdersPage = () => {
   const getOrders = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/auth/all-orders"
+        `${process.env.REACT_APP_API}/api/v1/auth/all-orders`
       );
       setOrders(data);
       setOrderItem(data[0]?.products);
@@ -37,7 +34,7 @@ const OrdersPage = () => {
   const handleChange = async (orderId, value) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:8080/api/v1/auth/order-status/${orderId}`,
+        `${process.env.REACT_APP_API}/api/v1/auth/order-status/${orderId}`,
         {
           status: value,
         }
@@ -86,10 +83,18 @@ const OrdersPage = () => {
       </div>
 
       <div className="md:mt-[90px] lg:mt-9">
-        {toggleState === 1 && <AllOrder orderItem={orderItem} />}
-        {toggleState === 2 && <PendingOrder />}
-        {toggleState === 3 && <ConfirmedOrder />}
-        {toggleState === 4 && <CancelOrder />}
+        {toggleState === 1 && (
+          <AllOrder orderItem={orders} setOrderItem={setOrders} />
+        )}
+        {toggleState === 2 && (
+          <PendingOrder orderItem={orders} setOrderItem={setOrders} />
+        )}
+        {toggleState === 3 && (
+          <ConfirmedOrder orderItem={orders} setOrderItem={setOrders} />
+        )}
+        {toggleState === 4 && (
+          <CancelOrder orderItem={orders} setOrderItem={setOrders} />
+        )}
       </div>
     </div>
   );

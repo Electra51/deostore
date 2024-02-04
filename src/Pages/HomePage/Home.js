@@ -11,19 +11,18 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  console.log("Search Query in Home:", searchQuery);
-
   useEffect(() => {
     const filteredProducts = products.filter((product) =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProducts(filteredProducts);
-    console.log("search", searchQuery);
   }, [searchQuery, products]);
+
+  //Get products function
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/api/v1/products/get-product`
+        `${process.env.REACT_APP_API}/api/v1/products/get-product`
       );
       setProducts(data.products);
     } catch (error) {
@@ -34,23 +33,21 @@ const Home = () => {
 
   useEffect(() => {
     getAllProducts();
-    console.log("search", searchQuery);
   }, [searchQuery]);
 
   const addToCart = (product) => {
-    // Check if the product is already in the cart
     const isProductInCart = cart.some((item) => item._id === product._id);
 
     if (!isProductInCart) {
-      // Product is not in the cart, add it
       setCart([...cart, product]);
       localStorage.setItem("cart", JSON.stringify([...cart, product]));
       toast.success("Item added to cart");
     } else {
-      // Product is already in the cart, show a warning
       toast.warning("Item is already in the cart");
     }
   };
+
+  //product price depending on discount
   const calculateDiscountedPrice = (price, discount) => {
     if (!price || !discount) return 0;
     const discountedAmount = (price * discount) / 100;
@@ -70,7 +67,7 @@ const Home = () => {
                 style={{ boxShadow: "0px 0px 3px #8A8A8A19" }}>
                 <div className="w-full h-3/5 overflow-hidden">
                   <img
-                    src={`http://localhost:8080/api/v1/products/product-photo/${product?._id}`}
+                    src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${product?._id}`}
                     alt="product image"
                     className="w-full h-full object-cover"
                   />

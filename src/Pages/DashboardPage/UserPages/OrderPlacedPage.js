@@ -9,7 +9,7 @@ const OrderPlacedPage = () => {
   const getOrders = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/auth/orders"
+        `${process.env.REACT_APP_API}/api/v1/auth/orders`
       );
       setOrders(data);
       setOrderItem(data[0]?.products);
@@ -21,6 +21,7 @@ const OrderPlacedPage = () => {
   useEffect(() => {
     if (auth?.token) getOrders();
   }, [auth?.token]);
+
   const calculateDiscountedPrice = (price, discount) => {
     if (!price || !discount) return 0;
     const discountedAmount = (price * discount) / 100;
@@ -40,25 +41,24 @@ const OrderPlacedPage = () => {
               <th>Size</th>
               <th>Status</th>
             </tr>
-          </thead>{" "}
+          </thead>
           <tbody>
-            {/* row 1 */}
             {orderItem?.map((e, i) => {
               return (
                 <tr key={i}>
                   <th>{i + 1}</th>
                   <td>{e?.name}</td>
                   <td>
-                    {" "}
                     BDT.{" "}
                     {calculateDiscountedPrice(e?.price, e?.discount).toFixed(2)}
                   </td>
                   <td>{e?.color}</td>
                   <td>{e?.size}</td>
                   <td>
-                    <button>
+                    {/* <button>
                       <p>Pending</p>
-                    </button>
+                    </button> */}{" "}
+                    hi
                   </td>
                 </tr>
               );

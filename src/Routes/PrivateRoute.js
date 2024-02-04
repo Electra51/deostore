@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-
 import axios from "axios";
-
 import { useAuth } from "../context/auth";
 import Spinner from "../components/common/Spinner";
 

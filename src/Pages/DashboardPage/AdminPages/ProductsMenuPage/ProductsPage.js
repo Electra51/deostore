@@ -18,6 +18,7 @@ const ProductsPage = () => {
       toast.error("Someething Went Wrong");
     }
   };
+
   // calculate discounted price
   const calculateDiscountedPrice = (price, discount) => {
     if (!price || !discount) return 0;

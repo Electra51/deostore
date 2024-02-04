@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import HelmetHooks from "../../../hooks/HelmetHooks";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../../context/auth";
-const Signin = () => {
-  const [promoCode, setPromoCode] = useState(null);
+import { useAuth } from "../../context/auth";
+import HelmetHooks from "../../hooks/HelmetHooks";
+const AdminPanelLogin = () => {
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,15 +13,31 @@ const Signin = () => {
     phone: "",
     password: "",
   });
+  // console.log("location.state", location);
+  // useEffect(() => {
+  //   const fetchPromoCode = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:8080/api/v1/promocodes/get-promo-code-user"
+  //       );
+  //       setPromoCode(response.data.promoCode);
+  //       console.log("response.data.promoCode", response.data.promoCode);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
+  //   fetchPromoCode();
+  // }, []);
+  // console.log("location.state", location.state);
   const handleSignIn = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
     const data = {
       phone: value.phone,
       password: value.password,
     };
-
+    console.log("data", data);
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/auth/login`,
@@ -36,18 +51,8 @@ const Signin = () => {
           token: res.data.token,
         });
         localStorage.setItem("auth", JSON.stringify(res?.data));
-        const promoCodeResponse = await axios.get(
-          `${process.env.REACT_APP_API}/api/v1/promocodes/get-promo-code-user`
-        );
 
-        console.log(promoCodeResponse);
-        setPromoCode(promoCodeResponse.data.promoCode);
-        localStorage.setItem(
-          "promo",
-          JSON.stringify(promoCodeResponse.data.promoCode)
-        );
-
-        navigate(location.state?.from || "/");
+        navigate("/dashboard/admin");
       } else {
         toast.error(res.data.message);
       }
@@ -55,15 +60,12 @@ const Signin = () => {
       console.log(err);
     }
   };
-  useEffect(() => {
-    if (auth?.token) handleSignIn();
-  }, [auth?.token]);
 
   return (
     <div>
-      <HelmetHooks title={"Signin | Deostore"} />
+      <HelmetHooks title={"Admin Login Panel | Deostore"} />
 
-      <div className="flex justify-center items-center h-[100vh] mx-auto">
+      <div className="flex flex-col justify-center items-center h-[100vh] mx-auto">
         <form
           onSubmit={handleSignIn}
           style={{ boxShadow: "0px 3px 6px #BFBFBF28" }}
@@ -99,16 +101,19 @@ const Signin = () => {
             type="submit">
             <p className=" text-[#1A1A1A] text-[14px]"> Sign In</p>
           </button>
-          <Link to="/signup" className="text-center mt-10">
-            <p className="text-[14px]">
-              New to deostore?{" "}
-              <span className="text-blue-500 underline">SignUp</span>
-            </p>
-          </Link>
         </form>
+        <div className="w-[271px] h-[161px] border rounded-[11px] px-5 py-4 mt-10">
+          <p className="font-medium text-[14px]">
+            Use following credentials to login
+          </p>
+          <p className="mt-2">Phone Number</p>
+          <p>123</p>
+          <p>Password</p>
+          <p>r@g.com</p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Signin;
+export default AdminPanelLogin;
