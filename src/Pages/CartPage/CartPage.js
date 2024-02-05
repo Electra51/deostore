@@ -6,6 +6,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import axios from "axios";
 import SuccessModal from "../../components/common/SuccessModal";
+import { Link } from "react-router-dom";
 
 const CartPage = () => {
   const [auth] = useAuth();
@@ -174,11 +175,14 @@ const CartPage = () => {
 
   return (
     <div className="max-w-[1366px] mx-auto">
-      <button
-        className="w-[114px] h-[45px] bg-white rounded-[23px] mt-7"
-        style={{ boxShadow: "0px 3px 6px #8A8A8A19" }}>
-        <p>Go Back</p>
-      </button>
+      <Link to="/">
+        {" "}
+        <button
+          className="w-[114px] h-[45px] bg-white rounded-[23px] mt-7"
+          style={{ boxShadow: "0px 3px 6px #8A8A8A19" }}>
+          <p>Go Back</p>
+        </button>
+      </Link>
 
       <h1 className="text-center bg-light p-2 mb-1">
         {!auth?.user

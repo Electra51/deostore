@@ -69,7 +69,7 @@ const PromoCodes = () => {
   };
   return (
     <div className="ml-[55px]">
-      <Link to="http://localhost:3000/dashboard/addpromocode">
+      <Link to="addpromocode">
         <button
           className="w-[189px] h-[45px] mt-[30px] rounded-[23px] border hover:bg-[#FFF700]"
           style={{ boxShadow: "0px 3px 6px #8A8A8A19" }}>

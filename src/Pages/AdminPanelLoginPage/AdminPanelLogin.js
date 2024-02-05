@@ -13,23 +13,7 @@ const AdminPanelLogin = () => {
     phone: "",
     password: "",
   });
-  // console.log("location.state", location);
-  // useEffect(() => {
-  //   const fetchPromoCode = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://localhost:8080/api/v1/promocodes/get-promo-code-user"
-  //       );
-  //       setPromoCode(response.data.promoCode);
-  //       console.log("response.data.promoCode", response.data.promoCode);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
 
-  //   fetchPromoCode();
-  // }, []);
-  // console.log("location.state", location.state);
   const handleSignIn = async (e) => {
     e.preventDefault();
 
