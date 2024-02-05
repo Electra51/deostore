@@ -1,70 +1,79 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# DeoStore- Online e-commerce web platform
+Welcome to DeoStore web application, your one-stop shop for high-quality multi vendor products. This web application is built using MERN stack technology.
 
-## Available Scripts
 
-In the project directory, you can run:
+![Logo](https://i.ibb.co/h8n6kK5/Screenshot-from-2024-02-05-13-22-11.png)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **User Roles:**
+  - **Buyer:** Browse products, add them to the cart, make a checkout, go to dashboard, authenticated user can apply promocode and decrease total order bill.
 
-### `npm test`
+  - **Admin:** Monitor all buyers order, handle status of orders like confirm, cancel or pending, and manage the overall system.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Cart:**
+  - Buyers can add products to their cart for future reference. and checkout their orders
 
-### `npm run build`
+- **Promocode generate:**
+  - one of the spacial feature is generating promocode.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Client:** React Js, TailwindCSS, Primereact, React toastify
 
-### `npm run eject`
+**Server:** Node Js, Express Js
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Database:** Mongodb
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Authenticarion:** JWT
+## Demo
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+https://deostore.vercel.app/
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Color Reference
 
-## Learn More
+| Color             | Hex                                                                |
+| ----------------- | ------------------------------------------------------------------ |
+| Example Color | ![#F2EE21](https://via.placeholder.com/10/F2EE21?text=+) #F2EE21 |
+| Example Color | ![#1F2937](https://via.placeholder.com/10/1F2937?text=+) #1F2937 |
+| Example Color | ![#FFFFFF](https://via.placeholder.com/10/#FFFFFF?text=+) #FFFFFF |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Installation
 
-### Code Splitting
+Install my-project with npm
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+  git clone my-project
+  npm install 
+  cd my-project
+```
 
-### Analyzing the Bundle Size
+## Run
+ Run my-project with npm
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+  npm start
+```
 
-### Making a Progressive Web App
+## Admin Credentials
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- phone number:  123
+- Password: r@g.com
+## Screenshots
 
-### Advanced Configuration
+![App Screenshot](https://i.ibb.co/6WYqRM8/Screenshot-from-2024-02-05-13-36-36.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![App Screenshot](https://i.ibb.co/BBnJtmS/Screenshot-from-2024-02-05-13-37-18.png)
 
-### Deployment
+![App Screenshot](https://i.ibb.co/pzkkrPW/Screenshot-from-2024-02-05-13-37-47.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+## 🔗 Links
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://nextjs-my-portfolio-electra51.vercel.app/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/safayet-nur/)
+[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/nur_safaye51)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
