@@ -7,6 +7,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import axios from "axios";
 import SuccessModal from "../../components/common/SuccessModal";
 import { Link } from "react-router-dom";
+import HelmetHooks from "../../hooks/HelmetHooks";
 
 const CartPage = () => {
   const [auth] = useAuth();
@@ -175,6 +176,7 @@ const CartPage = () => {
 
   return (
     <div className="max-w-[1366px] mx-auto">
+      <HelmetHooks title={"Cart | Deostore"} />
       <Link to="/">
         {" "}
         <button

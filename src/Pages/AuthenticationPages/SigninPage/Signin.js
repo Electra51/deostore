@@ -44,7 +44,7 @@ const Signin = () => {
       console.log(err);
     }
   };
-
+  //for authentication
   useEffect(() => {
     if (auth?.token) handleSignIn();
   }, [auth?.token]);
