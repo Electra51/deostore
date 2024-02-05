@@ -23,7 +23,6 @@ root.render(
       </SearchProvider>
     </AuthProvider>
   </PrimeReactProvider>
-
   // </React.StrictMode>
 );
 

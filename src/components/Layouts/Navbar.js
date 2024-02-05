@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoMenuOutline, IoSearchOutline } from "react-icons/io5";
 import { LuUser2 } from "react-icons/lu";
@@ -12,10 +12,32 @@ import profileImg from "../../assets/woman.png";
 import { toast } from "react-toastify";
 import { useSearch } from "../../context/search";
 import { useCart } from "../../context/cart";
+import axios from "axios";
 
 const Navbar = () => {
+  const [promoCode, setPromoCode] = useState(null);
   const [cart] = useCart();
   const [auth, setAuth] = useAuth();
+  const handleCart = async () => {
+    try {
+      const promoCodeResponse = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/promocodes/get-promo-code-user`
+      );
+
+      console.log(promoCodeResponse);
+      setPromoCode(promoCodeResponse.data.promoCode);
+      localStorage.setItem(
+        "promo",
+        JSON.stringify(promoCodeResponse.data.promoCode)
+      );
+    } catch (error) {
+      console.error("Error fetching promo code:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (auth?.token) handleCart();
+  }, [auth?.token]);
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -81,7 +103,8 @@ const Navbar = () => {
           </div>
           <Link
             to="/cart"
-            className="hidden lg:flex justify-center items-center gap-3 hover:bg-base-200 rounded-full cursor-pointer px-2 py-1">
+            className="hidden lg:flex justify-center items-center gap-3 hover:bg-base-200 rounded-full cursor-pointer px-2 py-1"
+            onClick={handleCart}>
             <RiShoppingCartLine className="w-[30px] h-[30px]" />{" "}
             <h2 className="text-xl text-[#2B2B2B] font-semibold">Cart</h2>
             <h2 className="h-[22px] w-[22px] rounded-full bg-[#FCEE26] flex justify-center items-center text-[14px]">

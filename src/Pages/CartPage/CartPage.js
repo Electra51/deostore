@@ -359,11 +359,14 @@ const CartPage = () => {
                 className="input placeholder:text-[#CBCBCB] placeholder:text-[14px] border-[#E8E8E8] input-[#EFEFEF] w-[242px] mx-auto h-[35px] rounded-[4px]"
               />
               {!auth.user ? (
-                <button
-                  onClick={applyPromoCode}
-                  className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
-                  Apply
-                </button>
+                <Link to="/signin">
+                  {" "}
+                  <button
+                    onClick={applyPromoCode}
+                    className="w-[62px] flex justify-center items-center h-[35px] border border-[#E8E8E8] absolute top-3 right-[21px] rounded-l-[4px] text-[14px] text-[#999999] cursor-pointer">
+                    Apply
+                  </button>
+                </Link>
               ) : (
                 <button
                   onClick={applyPromoCode}

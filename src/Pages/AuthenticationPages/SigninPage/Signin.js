@@ -5,7 +5,6 @@ import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context/auth";
 const Signin = () => {
-  const [promoCode, setPromoCode] = useState(null);
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,9 +13,8 @@ const Signin = () => {
     phone: "",
     password: "",
   });
-
   const handleSignIn = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
     const data = {
       phone: value.phone,
@@ -28,6 +26,7 @@ const Signin = () => {
         `${process.env.REACT_APP_API}/api/v1/auth/login`,
         data
       );
+
       if (res && res.data.success) {
         toast.success(res.data.message);
         setAuth({
@@ -36,16 +35,6 @@ const Signin = () => {
           token: res.data.token,
         });
         localStorage.setItem("auth", JSON.stringify(res?.data));
-        const promoCodeResponse = await axios.get(
-          `${process.env.REACT_APP_API}/api/v1/promocodes/get-promo-code-user`
-        );
-
-        console.log(promoCodeResponse);
-        setPromoCode(promoCodeResponse.data.promoCode);
-        localStorage.setItem(
-          "promo",
-          JSON.stringify(promoCodeResponse.data.promoCode)
-        );
 
         navigate(location.state?.from || "/");
       } else {
@@ -55,6 +44,7 @@ const Signin = () => {
       console.log(err);
     }
   };
+
   useEffect(() => {
     if (auth?.token) handleSignIn();
   }, [auth?.token]);
